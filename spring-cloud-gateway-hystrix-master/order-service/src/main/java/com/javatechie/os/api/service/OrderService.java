@@ -40,7 +40,8 @@ public class OrderService {
         logger.info("Order-Service Request : "+new ObjectMapper().writeValueAsString(request));
         Payment paymentResponse = template.postForObject(ENDPOINT_URL, payment, Payment.class);
 
-        response = paymentResponse.getPaymentStatus().equals("success") ? "payment processing successful and order placed" : "there is a failure in payment api , order added to cart";
+        response = paymentResponse.getPaymentStatus().equals("success") ? "payment processing successful and order placed" :
+                   "there is a failure in payment api , order added to cart";
         logger.info("Order Service getting Response from Payment-Service : "+new ObjectMapper().writeValueAsString(response));
         repository.save(order);
         return new TransactionResponse(order, paymentResponse.getAmount(), paymentResponse.getTransactionId(), response);
